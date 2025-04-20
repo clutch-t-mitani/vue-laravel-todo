@@ -1,0 +1,20 @@
+[
+    {
+        "level": "SEVERE",
+        "message": "http:\/\/localhost:5173\/@vite\/client - Failed to load resource: net::ERR_CONNECTION_REFUSED",
+        "source": "network",
+        "timestamp": 1744423410198
+    },
+    {
+        "level": "SEVERE",
+        "message": "http:\/\/localhost:5173\/resources\/js\/app.js - Failed to load resource: net::ERR_CONNECTION_REFUSED",
+        "source": "network",
+        "timestamp": 1744423410198
+    },
+    {
+        "level": "SEVERE",
+        "message": "http:\/\/localhost:5173\/resources\/js\/Pages\/Auth\/Login.vue - Failed to load resource: net::ERR_CONNECTION_REFUSED",
+        "source": "network",
+        "timestamp": 1744423410198
+    }
+]
