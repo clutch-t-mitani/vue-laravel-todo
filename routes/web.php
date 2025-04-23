@@ -16,6 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('/todos', [TodoController::class, 'index'])->name('todo.index');
+Route::get('/todos/bycategory', [TodoController::class, 'indexByCategory'])->name('todo.index-by-category');
 Route::post('/todos', [TodoController::class, 'store'])->name('todo.store');
 Route::delete('/todos', [TodoController::class, 'destroy'])->name('todo.destroy');
 

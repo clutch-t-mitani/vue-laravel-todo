@@ -56,9 +56,10 @@ const toggleTodo = async (todo) => {
 
 // 完了済みのタスクを削除
 const deleteTodo = () => {
-    form.delete(route('todo.destroy', {todos: props.todos.filter(todo => todo.is_completed)}), {
-        onBefore: () => confirm('本当に削除しますか?')
-    })
+	console.log('adafa')
+	form.delete(route('todo.destroy', {todos: props.todos.filter(todo => todo.is_completed)}), {
+			onBefore: () => confirm('本当に削除しますか?')
+	})
 }
 
 </script>
@@ -68,8 +69,8 @@ const deleteTodo = () => {
 
 <form @submit.prevent="storeTodo">
     <input type="text" v-model="form.title" class="mx-2">
-    <InputError class="mt-2" :message="form.errors.title" />
     <PrimaryButton class="mt-1">送信</PrimaryButton>
+    <InputError class="mt-2 flex" :message="form.errors.title" />
 </form>
 <br>
 <p>未対応: {{ props.todos.filter(todo => !todo.is_completed).length }}件</p>
@@ -91,7 +92,8 @@ const deleteTodo = () => {
 <DangerButton
     class="mt-2 ml-1"
     :disabled="props.todos.filter(todo => todo.is_completed).length > 0 ? false : true"
-    :class="{ 'bg-red-100 hover:bg-red-100': props.todos.filter(todo => todo.is_completed).length == 0 }"
-    >完了済タスクを削除</DangerButton>
+    :class="{ '!bg-red-200': props.todos.filter(todo => todo.is_completed).length == 0 }"
+    >完了済タスクを削除
+	</DangerButton>
 </form>
 </template>

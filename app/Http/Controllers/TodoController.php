@@ -22,6 +22,18 @@ class TodoController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     */
+    public function indexByCategory()
+    {
+        $todos = Todo::select('id', 'title', 'is_completed', 'category')->get();
+        dd($todos);
+        // return Inertia::render('Todo/Index', [
+        //     'todos' => $todos
+        // ]);
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()

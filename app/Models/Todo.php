@@ -15,5 +15,23 @@ class Todo extends Model
     protected $fillable = [
         'title',
         'is_completed',
+        'category'
     ];
+
+    // カテゴリーID定数 
+    const CATEGORY_ID_WORK       = 1;
+    const CATEGORY_ID_INDIVIDUAL = 2;
+    const CATEGORY_ID_FAMILY     = 3; 
+
+    // カテゴリー名称定数
+    const CATEGORY_NAME_WORK       = '仕事';
+    const CATEGORY_NAME_INDIVIDUAL = '個人';
+    const CATEGORY_NAME_FAMILY     = '家族';
+
+    const CATEGORY_LIST = [
+        self::CATEGORY_ID_WORK => self::CATEGORY_NAME_WORK,
+        self::CATEGORY_ID_INDIVIDUAL => self::CATEGORY_NAME_INDIVIDUAL,
+        self::CATEGORY_ID_FAMILY => self::CATEGORY_NAME_FAMILY,
+    ];
+
 }
