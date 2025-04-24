@@ -12,7 +12,6 @@ const props = defineProps({
     category_list: Object
 })
 
-
 const form = useForm({
     title: '',
     category: ''

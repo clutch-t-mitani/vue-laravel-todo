@@ -1,8 +1,9 @@
 <script setup>
   const props = defineProps({
-      todos: Object,
-      category_list: Object
+    todos_by_category: Object,
+    category_list: Object
   })
+  console.log(props.todos_by_category)
 </script>
 
 <template>
@@ -10,36 +11,24 @@
     <v-app>
       <v-row>  
         <v-col 
-          cols="12" md="6">
+          cols="12" 
+          :md="12 / Object.keys(todos_by_category).length"
+          v-for="(todos, index) in todos_by_category"
+          >
           <v-card>
-            <v-card-item  
-            v-for="(todo, index) in todos"
-            :key="todo.id">
-              <v-card-title>{{ todo.title }}</v-card-title>
+            <v-card-item  >
+              <v-card-title>
+                {{ category_list[index] }}
+              </v-card-title>
     
-              <v-card-subtitle>{{ category_list[todo.category] }}</v-card-subtitle>
+              <v-card-subtitle 
+              v-for="(todo, index) in todos"
+              :key="todo.id"
+              >
+              ・{{ todo.title }}
+              </v-card-subtitle>
             </v-card-item>
           </v-card>
-    
-          <div class="text-center text-caption">Using Markup Only</div>
-        </v-col>
-        <v-col 
-          cols="12" md="6">
-          <v-card>
-            <v-card-item  
-            v-for="(todo, index) in todos"
-            :key="todo.id">
-              <v-card-title>{{ todo.title }}</v-card-title>
-    
-              <v-card-subtitle>{{ category_list[todo.category] }}</v-card-subtitle>
-            </v-card-item>
-    
-            <!-- <v-card-text>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, ratione debitis quis est labore voluptatibus!
-            </v-card-text> -->
-          </v-card>
-    
-          <div class="text-center text-caption">Using Markup Only</div>
         </v-col>
       </v-row>
     </v-app>
