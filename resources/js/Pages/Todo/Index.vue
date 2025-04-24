@@ -65,7 +65,7 @@ const deleteTodo = () => {
 </script>
 
 <template>
-<div class="p-3">
+<div class="p-2">
     <h1 class="text-2xl p-2">TODO一覧</h1>
     <form @submit.prevent="storeTodo">
         <input type="text" v-model="form.title" class="mx-2 bg-gray-200">
@@ -77,25 +77,24 @@ const deleteTodo = () => {
     <p>対応済み: {{ props.todos.filter(todo => todo.is_completed).length }} 件</p>
     <br>
     <form @submit.prevent="deleteTodo">
-    <ul class="max-w-md space-y-1 list-inside dark:text-gray-400">
-        <li v-for="todo in todos" :key="todo.id" class="flex items-center">
-            <Checkbox
-                :checked="todo.is_completed ? true : false"
-                :value="todo.id"
-                class="bg-gray-200 mr-1"
-                @change="toggleTodo(todo)"
-            />
-            <span :class="{ 'line-through': todo.is_completed }">
-                {{ todo.title }}
-            </span>
-        </li>
-    </ul>
-    <DangerButton
-        class="mt-2 ml-1"
-        :disabled="props.todos.filter(todo => todo.is_completed).length > 0 ? false : true"
-        :class="{ '!bg-red-200': props.todos.filter(todo => todo.is_completed).length == 0 }"
-        >完了済タスクを削除
-        </DangerButton>
+        <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+            <li v-for="todo in todos" :key="todo.id" class="flex items-center cursor-pointer" @click="toggleTodo(todo)" >
+                <Checkbox
+                    :checked="todo.is_completed ? true : false"
+                    :value="todo.id"
+                    class="mr-2 bg-gray-200"
+                />
+                <span :class="{ 'line-through': todo.is_completed }">
+                    {{ todo.title }}
+                </span>
+            </li>
+        </ul>
+        <DangerButton
+            class="mt-2 ml-1"
+            :disabled="props.todos.filter(todo => todo.is_completed).length > 0 ? false : true"
+            :class="{ '!bg-red-200': props.todos.filter(todo => todo.is_completed).length == 0 }"
+            >完了済タスクを削除
+            </DangerButton>
     </form>
 </div>
 </template>
