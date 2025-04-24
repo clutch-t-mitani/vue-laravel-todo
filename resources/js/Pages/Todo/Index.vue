@@ -8,12 +8,14 @@ import InputError from '@/Components/InputError.vue';
 import axios from 'axios'
 
 const props = defineProps({
-    todos: Array
+    todos: Array,
+    category_list: Object
 })
+
 
 const form = useForm({
     title: '',
-
+    category: ''
 })
 
 const storeTodo = () => {
@@ -68,24 +70,33 @@ const deleteTodo = () => {
 <div class="p-2">
     <h1 class="text-2xl p-2">TODO一覧</h1>
     <form @submit.prevent="storeTodo">
-        <input type="text" v-model="form.title" class="mx-2 bg-gray-200">
+        <input type="text" v-model="form.title" class="mx-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
+        <select v-model="form.category" class="pl-2 pr-8 py-2 borderborder-gray-300 rounded-md bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition mr-2">
+            <option value="" readonly>--</option>
+            <option 
+                v-for="(category_name, index) in category_list" 
+                :key="index" 
+                :value="index">{{ category_name }}
+            </option>
+>        </select>
         <PrimaryButton class="mt-1">送信</PrimaryButton>
         <InputError class="mt-2 flex" :message="form.errors.title" />
+        <InputError class="mt-2 flex" :message="form.errors.category" />
     </form>
     <br>
     <p>未対応: {{ props.todos.filter(todo => !todo.is_completed).length }}件</p>
     <p>対応済み: {{ props.todos.filter(todo => todo.is_completed).length }} 件</p>
     <br>
     <form @submit.prevent="deleteTodo">
-        <ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
+        <ul class="max-w-md space-y-1 text-gray-800 list-inside ">
             <li v-for="todo in todos" :key="todo.id" class="flex items-center cursor-pointer" @click="toggleTodo(todo)" >
                 <Checkbox
                     :checked="todo.is_completed ? true : false"
                     :value="todo.id"
-                    class="mr-2 bg-gray-200"
+                    class="mr-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition "
                 />
                 <span :class="{ 'line-through': todo.is_completed }">
-                    {{ todo.title }}
+                    {{ todo.title }} （{{ category_list[todo.category] }}）
                 </span>
             </li>
         </ul>

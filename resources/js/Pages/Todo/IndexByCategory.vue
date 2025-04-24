@@ -1,7 +1,7 @@
 <script setup>
   const props = defineProps({
       todos: Object,
-      category_list: Array
+      category_list: Object
   })
 </script>
 

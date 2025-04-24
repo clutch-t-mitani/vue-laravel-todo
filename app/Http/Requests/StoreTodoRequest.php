@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Todo;
+use Illuminate\Validation\Rule;
 
 class StoreTodoRequest extends FormRequest
 {
@@ -23,6 +25,7 @@ class StoreTodoRequest extends FormRequest
     {
         return [
             'title' => ['required', 'max:255'],
+            'category' => ['required', Rule::in(array_keys(Todo::CATEGORY_LIST))],
         ];
     }
 }
