@@ -6,6 +6,19 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
+// 追記
+import "@mdi/font/css/materialdesignicons.css"
+import "vuetify/styles"
+import { createVuetify } from "vuetify"
+import * as components from "vuetify/components"
+import * as directives from "vuetify/directives"
+
+const vuetify = createVuetify({
+  components,
+  directives,
+})
+// 追記ここまで、下のuseのところにもう１箇所あります
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
@@ -17,6 +30,7 @@ createInertiaApp({
         ),
     setup({ el, App, props, plugin }) {
         return createApp({ render: () => h(App, props) })
+            .use(vuetify) 
             .use(plugin)
             .use(ZiggyVue)
             .mount(el);

@@ -27,10 +27,11 @@ class TodoController extends Controller
     public function indexByCategory()
     {
         $todos = Todo::select('id', 'title', 'is_completed', 'category')->get();
-        dd($todos);
-        // return Inertia::render('Todo/Index', [
-        //     'todos' => $todos
-        // ]);
+        $category_list = Todo::CATEGORY_LIST;
+        return Inertia::render('Todo/IndexByCategory', [
+            'todos' => $todos,
+            'category_list' => $category_list
+        ]);
     }
 
     /**

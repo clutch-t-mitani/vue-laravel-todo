@@ -65,35 +65,37 @@ const deleteTodo = () => {
 </script>
 
 <template>
-<h1 class="text-2xl p-2">TODO一覧</h1>
-
-<form @submit.prevent="storeTodo">
-    <input type="text" v-model="form.title" class="mx-2">
-    <PrimaryButton class="mt-1">送信</PrimaryButton>
-    <InputError class="mt-2 flex" :message="form.errors.title" />
-</form>
-<br>
-<p>未対応: {{ props.todos.filter(todo => !todo.is_completed).length }}件</p>
-<p>対応済み: {{ props.todos.filter(todo => todo.is_completed).length }} 件</p>
-<br>
-<form @submit.prevent="deleteTodo">
-<ul class="max-w-md space-y-1 text-gray-500 list-inside dark:text-gray-400">
-    <li v-for="todo in todos" :key="todo.id" class="flex items-center">
-        <Checkbox
-            :checked="todo.is_completed ? true : false"
-            :value="todo.id"
-            @change="toggleTodo(todo)"
-        />
-        <span :class="{ 'line-through': todo.is_completed }">
-            {{ todo.title }}
-        </span>
-    </li>
-</ul>
-<DangerButton
-    class="mt-2 ml-1"
-    :disabled="props.todos.filter(todo => todo.is_completed).length > 0 ? false : true"
-    :class="{ '!bg-red-200': props.todos.filter(todo => todo.is_completed).length == 0 }"
-    >完了済タスクを削除
-	</DangerButton>
-</form>
+<div class="p-3">
+    <h1 class="text-2xl p-2">TODO一覧</h1>
+    <form @submit.prevent="storeTodo">
+        <input type="text" v-model="form.title" class="mx-2 bg-gray-200">
+        <PrimaryButton class="mt-1">送信</PrimaryButton>
+        <InputError class="mt-2 flex" :message="form.errors.title" />
+    </form>
+    <br>
+    <p>未対応: {{ props.todos.filter(todo => !todo.is_completed).length }}件</p>
+    <p>対応済み: {{ props.todos.filter(todo => todo.is_completed).length }} 件</p>
+    <br>
+    <form @submit.prevent="deleteTodo">
+    <ul class="max-w-md space-y-1 list-inside dark:text-gray-400">
+        <li v-for="todo in todos" :key="todo.id" class="flex items-center">
+            <Checkbox
+                :checked="todo.is_completed ? true : false"
+                :value="todo.id"
+                class="bg-gray-200 mr-1"
+                @change="toggleTodo(todo)"
+            />
+            <span :class="{ 'line-through': todo.is_completed }">
+                {{ todo.title }}
+            </span>
+        </li>
+    </ul>
+    <DangerButton
+        class="mt-2 ml-1"
+        :disabled="props.todos.filter(todo => todo.is_completed).length > 0 ? false : true"
+        :class="{ '!bg-red-200': props.todos.filter(todo => todo.is_completed).length == 0 }"
+        >完了済タスクを削除
+        </DangerButton>
+    </form>
+</div>
 </template>
