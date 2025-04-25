@@ -11,4 +11,6 @@ Route::get('/user', function (Request $request) {
 
 
 Route::patch('/todos/{todo}', [TodoController::class, 'update']);
+Route::patch('/todos/update-category/{todo}', [TodoController::class, 'updateCategory']);
+
 

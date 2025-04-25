@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateTodoRequest;
 use App\Models\Todo;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Validation\Rule;
 
 class TodoController extends Controller
 {
@@ -29,8 +30,15 @@ class TodoController extends Controller
      */
     public function indexByCategory()
     {
-        $todos_by_category = Todo::select('id', 'title', 'is_completed', 'category')->get()->groupBy('category');
+        $todos_grouped = Todo::select('id', 'title', 'is_completed', 'category')->get()->groupBy('category');
         $category_list = Todo::CATEGORY_LIST;
+        
+        $todos_by_category = [];
+
+        foreach ($category_list as $id => $category_name) {
+            $todos_by_category[$id] = $todos_grouped->get($id, collect())->values();
+        }
+        
         return Inertia::render('Todo/IndexByCategory', [
             'todos_by_category' => $todos_by_category,
             'category_list' => $category_list
@@ -83,6 +91,31 @@ class TodoController extends Controller
         return response()->json([
             'message' => '更新しました',
             'todo' => $todo
+        ]);
+    }
+
+    /**
+     * カテゴリ変更
+     * @param $request
+     * @param $todo_id
+     * @return json
+     */
+    public function updateCategory(Request $request, $todo_id)
+    {
+        // バリデーション（任意）
+        $validated = $request->validate([
+            'category' =>  ['required', Rule::in(array_keys(Todo::CATEGORY_LIST))],
+        ]);
+
+        $todo = Todo::find($todo_id);
+
+        // 更新処理
+        $todo->category = $validated['category'];
+        $todo->save();
+
+        return response()->json([
+            'message' => 'カテゴリ更新成功',
+            'todo' => $todo,
         ]);
     }
 
