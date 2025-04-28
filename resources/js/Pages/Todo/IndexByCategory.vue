@@ -87,7 +87,7 @@ const updateTodo = () => {
               >
                 <template #item="{ element: todo }">
                   <v-card-subtitle
-                    class="cursor-pointer"
+                    class="cursor-pointer hover:bg-red-300"
                     @click="openTodoModal(todo)"
                   >
                     ・{{ todo.title }}

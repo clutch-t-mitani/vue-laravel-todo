@@ -7,6 +7,7 @@ import { useForm } from '@inertiajs/vue3';
 import InputError from '@/Components/InputError.vue';
 import axios from 'axios'
 import { ref, onMounted } from 'vue';
+import dayjs from 'dayjs'
 
 const props = defineProps({
     todos: Array,
@@ -114,7 +115,6 @@ const deleteTodo = () => {
     <br>
     <p>未対応: {{ props.todos.filter(todo => !todo.is_completed).length }}件</p>
     <p>対応済み: {{ props.todos.filter(todo => todo.is_completed).length }} 件</p>
-    <!-- <p>{{ session('message') }}</p> -->
 
     <br>
     <form @submit.prevent="deleteTodo">
@@ -125,6 +125,9 @@ const deleteTodo = () => {
                     :value="todo.id"
                     class="mr-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition "
                 />
+                <v-tooltip activator="parent" location="top">
+                    作成日: {{ dayjs(todo.created_at).format('YYYY/MM/DD HH:mm') }}
+                </v-tooltip>
                 <span :class="{ 'line-through': todo.is_completed }">
                     {{ todo.title }} （{{ category_list[todo.category] }}）
                 </span>

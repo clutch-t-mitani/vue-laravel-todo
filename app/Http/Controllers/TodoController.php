@@ -17,7 +17,7 @@ class TodoController extends Controller
      */
     public function index()
     {
-        $todos = Todo::select('id', 'title', 'is_completed', 'category')->get();
+        $todos = Todo::select('id', 'title', 'is_completed', 'category', 'created_at')->get();
         $category_list = Todo::CATEGORY_LIST;
 
         return Inertia::render('Todo/Index', [
