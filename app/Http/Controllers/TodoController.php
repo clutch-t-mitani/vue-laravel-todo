@@ -6,6 +6,7 @@ use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
 use App\Models\Todo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Illuminate\Validation\Rule;
 
@@ -59,6 +60,7 @@ class TodoController extends Controller
     public function store(StoreTodoRequest $request)
     {
         Todo::create($request->all());
+        session()->flash('success', 'ユーザー登録しました。');
         return redirect()->route('todo.index');
     }
 
@@ -125,9 +127,14 @@ class TodoController extends Controller
      * @param $todo_id
      * @return json
      */
-    public function updateTitle(Request $request)
+    public function updateTitle(Request $request, $todo_id)
     {
-        dd($request->all());
+        $todo = Todo::find($todo_id);
+        $todo->update([
+            'title' => $request->title
+        ]);
+
+        return redirect()->route('todo.index-by-category');
     }
 
     /**

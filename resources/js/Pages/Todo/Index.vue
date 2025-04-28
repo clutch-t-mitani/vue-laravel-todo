@@ -6,11 +6,17 @@ import { computed } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import InputError from '@/Components/InputError.vue';
 import axios from 'axios'
+import { ref, onMounted } from 'vue';
 
 const props = defineProps({
     todos: Array,
-    category_list: Object
+    category_list: Object,
+    flash: Object
 })
+
+const showAlert = ref(false)
+const alertMessage = ref('')
+const alertType = ref('')
 
 const form = useForm({
     title: '',
@@ -19,16 +25,34 @@ const form = useForm({
 
 const storeTodo = () => {
     form.post(route('todo.store'), {
-        onSuccess: () => form.reset(),
+        onSuccess: () => {
+            form.reset()
+            alertMessage.value = '登録に成功しました'
+            alertType.value = 'success'
+            showTemporaryAlert()
+        },
+        onError: () => {
+            alertMessage.value = '登録に失敗しました'
+            alertType.value = 'error'
+            showTemporaryAlert()
+        }
     });
+}
 
+// アラートを数秒だけ表示する関数
+const showTemporaryAlert = () => {
+  showAlert.value = true
+  setTimeout(() => {
+    showAlert.value = false
+  }, 3000)
 }
 
 // 完了済みタスク件数
 // const completed_task_count = computed(() => {
-//   console.log('aaaa')
-//   return props.todos?.filter(todo => todo.is_completed).length ?? 0
+// //   console.log('aaaa')
+//   return props.flash
 // })
+
 
 // // 未完了タスク件数
 // const uncompleted_task_count = computed(() => {
@@ -68,6 +92,12 @@ const deleteTodo = () => {
 <div class="p-2">
     <h1 class="text-2xl p-2">TODO一覧</h1>
     <form @submit.prevent="storeTodo">
+        <v-alert 
+            v-if="showAlert"
+            :title="alertMessage"
+            :type="alertType"
+            class="mb-2 w-1/2"
+        ></v-alert>        
         <input type="text" v-model="form.title" class="mx-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
         <select v-model="form.category" class="pl-2 pr-8 py-2 borderborder-gray-300 rounded-md bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition mr-2">
             <option value="" readonly>--</option>
@@ -84,6 +114,8 @@ const deleteTodo = () => {
     <br>
     <p>未対応: {{ props.todos.filter(todo => !todo.is_completed).length }}件</p>
     <p>対応済み: {{ props.todos.filter(todo => todo.is_completed).length }} 件</p>
+    <!-- <p>{{ session('message') }}</p> -->
+
     <br>
     <form @submit.prevent="deleteTodo">
         <ul class="max-w-md space-y-1 text-gray-800 list-inside ">

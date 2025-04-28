@@ -55,7 +55,7 @@ const openTodoModal = (todo) => {
 }
 
 const updateTodo = () => {
-  form.patch(route('todos.update-title', selectedTodo.value.id), {
+  form.patch(route('todos.update-title', selectedTodo.value), {
     onSuccess: () => {
       form.reset();
       dialog.value = false;
