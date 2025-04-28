@@ -1,15 +1,39 @@
 <script setup>
+import { ref, watchEffect } from 'vue'
 import draggable from 'vuedraggable'
+import { useForm } from '@inertiajs/vue3';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 
 const props = defineProps({
   todos_by_category: Object,
   category_list: Object
 })
 
+const form = useForm({
+    title: '',
+    is_completed: '',
+    category: '',
+
+})
+
+// モーダル制御用
+const dialog = ref(false)
+const selectedTodo = ref(null)
+
+watchEffect (() => {
+  if (selectedTodo.value) {
+    form.title = selectedTodo.value.title
+    form.category = selectedTodo.value.category
+    form.is_completed = selectedTodo.value.is_completed
+    form.category = selectedTodo.value.category
+  }
+})
+
+
 const onTodoMoved = async (newCategoryId, event) => {
   const movedTodo = event?.added?.element;
   if (!movedTodo) return;
-  const originalCategory = movedTodo.category; // ← 元のカテゴリを保持
+  const originalCategory = movedTodo.category;
 
   try {
     movedTodo.category = newCategoryId;
@@ -22,8 +46,22 @@ const onTodoMoved = async (newCategoryId, event) => {
     console.error('更新失敗:', e.response?.data || e);
     movedTodo.category = originalCategory;
   }
-};
+}
 
+// todoをクリックしたとき
+const openTodoModal = (todo) => {
+  selectedTodo.value = todo
+  dialog.value = true
+}
+
+const updateTodo = () => {
+  form.patch(route('todos.update-title', selectedTodo.value.id), {
+    onSuccess: () => {
+      form.reset();
+      dialog.value = false;
+    },
+  });
+}
 </script>
 
 <template>
@@ -38,27 +76,48 @@ const onTodoMoved = async (newCategoryId, event) => {
         >
           <v-card>
             <v-card-item>
-              <v-card-title>
-                {{ category_name }}
-              </v-card-title>
+              <v-card-title>{{ category_name }}</v-card-title>
 
-              <!-- draggable をここで使用 -->
+              <!-- draggable -->
               <draggable
                 v-model="todos_by_category[category_id]"
                 :group="{ name: 'todos', pull: true, put: true }"
                 item-key="id"
                 @change="(event) => onTodoMoved(category_id, event)"
               >
-                  <template #item="{ element: todo }">
-                    <v-card-subtitle class="cursor-pointer">
-                      ・{{ todo.title }}
-                    </v-card-subtitle>
-                  </template>
+                <template #item="{ element: todo }">
+                  <v-card-subtitle
+                    class="cursor-pointer"
+                    @click="openTodoModal(todo)"
+                  >
+                    ・{{ todo.title }}
+                  </v-card-subtitle>
+                </template>
               </draggable>
             </v-card-item>
           </v-card>
         </v-col>
       </v-row>
+
+      <!-- モーダル -->
+      <v-dialog v-model="dialog" max-width="500">
+        <form @submit.prevent="updateTodo">
+        <v-card>
+          <v-card-title>名称編集</v-card-title>
+            <v-card-text>
+              <div v-if="selectedTodo">
+                <input type="text" v-model="form.title" class="mx-2 border border-gray-300 rounded-md bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition">
+              </div>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer />
+              <PrimaryButton class="mt-1">送信</PrimaryButton>
+              <v-btn color="primary" @click="dialog = false">閉じる</v-btn>
+            </v-card-actions>
+          </v-card>
+        </form>
+      </v-dialog>
+
     </v-app>
   </div>
 </template>

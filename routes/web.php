@@ -20,6 +20,8 @@ Route::get('/todos/bycategory', [TodoController::class, 'indexByCategory'])->nam
 Route::post('/todos', [TodoController::class, 'store'])->name('todo.store');
 Route::delete('/todos', [TodoController::class, 'destroy'])->name('todo.destroy');
 
+// 名称変更
+Route::patch('/todos/{todo}', [TodoController::class, 'updateTitle'])->name('todos.update-title');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

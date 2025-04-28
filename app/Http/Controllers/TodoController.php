@@ -120,6 +120,17 @@ class TodoController extends Controller
     }
 
     /**
+     * カテゴリ変更
+     * @param $request
+     * @param $todo_id
+     * @return json
+     */
+    public function updateTitle(Request $request)
+    {
+        dd($request->all());
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request)

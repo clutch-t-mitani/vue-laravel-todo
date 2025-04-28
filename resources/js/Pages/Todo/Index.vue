@@ -57,7 +57,6 @@ const toggleTodo = async (todo) => {
 
 // 完了済みのタスクを削除
 const deleteTodo = () => {
-	console.log('adafa')
 	form.delete(route('todo.destroy', {todos: props.todos.filter(todo => todo.is_completed)}), {
 			onBefore: () => confirm('本当に削除しますか?')
 	})
