@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TodoController;
+use App\Http\Controllers\TestController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -22,6 +23,10 @@ Route::delete('/todos', [TodoController::class, 'destroy'])->name('todo.destroy'
 
 // 名称変更
 Route::patch('/todos/{todo}', [TodoController::class, 'updateTitle'])->name('todos.update-title');
+
+// テストコントローラ
+Route::get('/test', [TestController::class, 'index'])->name('test.index');
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
